@@ -31,14 +31,18 @@ public class Ingresso {
             
         }
     }
+    
     @Override
     public String toString() {
-        return "Ingresso{" +
-                "pessoa=" + pessoa.getNome() +
-                "Filme" + sala.getFilme().getTitulo() +
-                ", sala=" + sala.getNumeroSala() +
-                ", assento=" + assento.getNumero() +
-                ", valorPago=" + valorPago +
-                '}';
+        return """
+               Ingresso Comprado:
+               Pessoa: """ + this.pessoa.getNome() + "\n" +
+               "Sala: " + this.sala + "\n" +
+               "Assento: " + this.assento + "\n" +
+               "Valor Pago: R$ " + this.valorPago;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 }

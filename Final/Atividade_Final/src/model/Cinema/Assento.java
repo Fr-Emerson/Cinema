@@ -62,7 +62,7 @@ public class Assento {
 
     @Override
     public String toString() {
-        String numFormatado = String.format("%02d", numero);
-        return ocupado ? "[ X ]" : "[ " + numFormatado + " ]";
+        String numFormatado = String.format("%02d", this.numero);
+        return ocupado ? "["+this.fileira+"]" : "[ " + numFormatado + " ]";
     }
 }

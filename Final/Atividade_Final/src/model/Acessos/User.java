@@ -23,6 +23,7 @@ public class User {
                 System.out.println("1. Comprar Ingresso");
                 System.out.println("2. Ver mapa de assentos");
                 System.out.println("3. Ver Filmes em Cartaz");
+                System.out.println("4. Ver Ingressos Comprados");
                 System.out.println("0. Voltar");
                 System.out.print("Escolha >>> ");
                 opc = input.nextInt();
@@ -36,13 +37,34 @@ public class User {
                 case 2 ->
                     verMapaAssentos();
                 case 3 ->
-                    verFilmesEmCartaz();
+                    Sistema.verFilmesEmCartaz();
+                case 4 ->
+                    verHistoricoCompras();
                 case 0 ->
                     System.out.println("Voltando ao menu principal...");
                 default ->
                     System.out.println("Opção inválida.");
             }
         } while (opc != 0);
+    }
+
+    public void verHistoricoCompras() {
+        System.out.println("Digite o nome do cliente:");
+        String nome = input.nextLine();
+        if (nome.isEmpty()) {
+            System.out.println("Nome não pode ser vazio.");
+            return;
+        }
+        boolean encontrou = false;
+        for (Ingresso ingresso : Sistema.ingressosVendidos) {
+            if (ingresso.getPessoa().getNome().equalsIgnoreCase(nome)) {
+                System.out.println(ingresso);
+                encontrou = true;
+            }
+        }
+        if (!encontrou) {
+            System.out.println("Nenhum ingresso encontrado para: " + nome);
+        }
     }
 
     public void verMapaAssentos() {
@@ -61,18 +83,6 @@ public class User {
             System.out.println("Erro ao exibir mapa de assentos.");
         }
 
-    }
-
-    public void verFilmesEmCartaz() {
-        System.out.println("\n=== Filmes em Cartaz ===");
-        for (Sala sala : Sistema.salas) {
-            Filme filme = sala.getFilme();
-            if (filme != null) {
-                System.out.println("Sala " + sala.getNumeroSala() + ": " + filme.toString());
-            } else {
-                System.out.println("Sala " + sala.getNumeroSala() + ": Nenhum filme cadastrado.");
-            }
-        }
     }
 
     public void comprar() {
@@ -118,5 +128,4 @@ public class User {
         System.out.println("\n=== Ingresso Comprado ===");
         System.out.println(ingresso);
     }
-
 }

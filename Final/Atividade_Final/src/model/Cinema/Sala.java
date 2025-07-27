@@ -142,5 +142,8 @@ public class Sala {
     public void setAssentos(Assento[][] assentos) {
         this.assentos = assentos;
     }
-    
+    @Override
+    public String toString() {
+        return "Sala " + numeroSala;
+    }
 }

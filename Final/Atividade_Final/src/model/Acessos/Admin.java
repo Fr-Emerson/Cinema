@@ -1,8 +1,10 @@
 package model.Acessos;
 
+import java.util.List;
 import java.util.Scanner;
 import model.Cinema.Filme;
 import model.Cinema.Ingresso;
+import model.Cinema.Sala;
 import model.Sistema;
 import model.utilidades;
 
@@ -17,10 +19,12 @@ public class Admin {
             utilidades.ConsoleUtil.pause();
             utilidades.ConsoleUtil.clearScreen();
             System.out.println("\n=== Menu Administrador ===");
-            System.out.println("1. Cadastrar Filme");
-            System.out.println("2. Remover Filme");
-            System.out.println("3. Ver Ocupação da Sala");
-            System.out.println("4. Gerar Relatório de Lucro");
+            System.out.println("1. Ver filmes em cartaz");
+            System.out.println("2. Cadastrar Filme");
+            System.out.println("3. Remover Filme");
+            System.out.println("4. Ver Ocupação da Sala");
+            System.out.println("5. Gerar Relatório de Lucro");
+            System.out.println("6. Preencher Salas com Filmes Mais Lucrativos");
             System.out.println("0. Voltar");
             try {
                 opc = input.nextInt();
@@ -28,22 +32,30 @@ public class Admin {
             } catch (Exception e) {
                 System.out.println("Entrada inválida. Por favor, insira um número.");
                 input.nextLine();
-            }
-            finally{
+            } finally {
                 switch (opc) {
-                case 1 -> cadastrarFilme();
-                case 2 -> removerFilme();
-                case 3 -> verOcupacao();
-                case 4 -> gerarRelatorioLucro();
-                case 0 ->
-                    System.out.println("Voltando ao menu principal...");
-                default ->
-                    System.out.println("Opção inválida.");
+                    case 1 ->
+                        Sistema.verFilmesEmCartaz();
+                    case 2 ->
+                        cadastrarFilme();
+                    case 3 ->
+                        removerFilme();
+                    case 4 ->
+                        verOcupacao();
+                    case 5 ->
+                        gerarRelatorioLucro();
+                    case 6 ->
+                        preencherSalas();
+                    case 0 ->
+                        System.out.println("Voltando ao menu principal...");
+                    default ->
+                        System.out.println("Opção inválida.");
+                }
             }
-        }
 
-    } while (opc != 0);
+        } while (opc != 0);
     }
+
     private void cadastrarFilme() {
         try {
             System.out.print("Título: ");
@@ -63,7 +75,7 @@ public class Admin {
                 return;
             }
             input.nextLine();
-    
+
             Filme filme = new Filme(titulo, duracao, genero, preco);
             Sistema.salas[sala - 1].cadastrarFilme(filme);
 
@@ -77,10 +89,9 @@ public class Admin {
             System.out.print("Sala (1 a 5): ");
             int sala = input.nextInt();
             input.nextLine();
-            if(sala < 1 || sala > 5){
+            if (sala < 1 || sala > 5) {
                 System.out.println("Essa sala não existe");
-            }
-            else{
+            } else {
                 Sistema.salas[sala - 1].mostrarMapaAssentos();
             }
         } catch (Exception e) {
@@ -89,7 +100,7 @@ public class Admin {
     }
 
     private void gerarRelatorioLucro() {
-        double[] lucros = new double[5]; 
+        double[] lucros = new double[5];
         for (Ingresso ingresso : Sistema.ingressosVendidos) {
             int salaIndex = ingresso.getSala().getNumeroSala() - 1;
             lucros[salaIndex] += ingresso.getValorPago();
@@ -99,22 +110,50 @@ public class Admin {
             System.out.printf("Sala %d: R$ %.2f%n", (i + 1), lucros[i]);
         }
     }
-    public void removerFilme()
-   {
-       try {
-           System.out.print("Nome do filme a ser removido: ");
-           String nomeFilme = input.nextLine();
-           System.out.print("Sala (1 a 5): ");
-           int sala = input.nextInt();
-           input.nextLine();
-           if (sala < 1 || sala > 5) {
-               System.out.println("Essa sala não existe");
-           } else {
-               Sistema.salas[sala - 1].removerFilme(nomeFilme);
-           }
-           Sistema.salas[sala - 1].removerFilme(nomeFilme);
-       } catch (Exception e) {
-           System.out.println("Erro ao remover filme: " + e.getMessage());
-       }
-   }
+
+    public void removerFilme() {
+        try {
+            System.out.print("Nome do filme a ser removido: ");
+            String nomeFilme = input.nextLine();
+            System.out.print("Sala (1 a 5): ");
+            int sala = input.nextInt();
+            input.nextLine();
+            if (sala < 1 || sala > 5) {
+                System.out.println("Essa sala não existe");
+            } else {
+                Sistema.salas[sala - 1].removerFilme(nomeFilme);
+            }
+            Sistema.salas[sala - 1].removerFilme(nomeFilme);
+        } catch (Exception e) {
+            System.out.println("Erro ao remover filme: " + e.getMessage());
+        }
+    }
+
+    private void preencherSalas() {
+        List<Filme> filmesOrdenados = Sistema.getFilmesOrdenadosPorLucro();
+
+        if (filmesOrdenados.isEmpty()) {
+            System.out.println("Nenhum filme em cartaz para preencher salas.");
+            return;
+        }
+
+        int index = 0, count = 0;
+
+        for (Sala sala : Sistema.salas) {
+            if (sala.getFilme() == null) {
+                Filme escolhido = filmesOrdenados.get(index);
+                sala.setFilme(escolhido);
+                System.out.printf("Sala %d preenchida com: %s%n", sala.getNumeroSala(), escolhido.toString());
+                index = (index + 1) % filmesOrdenados.size();
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("Todas as salas já estão ocupadas.");
+        } else {
+            System.out.printf("%d sala(s) foram preenchidas com os filmes mais lucrativos.%n", count);
+        }
+    }
+
 }
