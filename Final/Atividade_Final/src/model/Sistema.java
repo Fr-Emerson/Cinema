@@ -26,14 +26,21 @@ public class Sistema {
         int opcao;
         System.out.println("Bem-vindo ao Cinema IFMA!");
         do {
-            System.out.println("\nMenu do Sistema:");
-            System.out.println("1. Acessar como Usuário");
-            System.out.println("2. Acessar como Administrador");
-            System.out.println("0. Sair");
-            System.out.print("Escolha: ");
-            opcao = input.nextInt();
-            input.nextLine();
+            try {
+                utilidades.ConsoleUtil.pause();
+                utilidades.ConsoleUtil.clearScreen();
+                System.out.println("\nMenu do Sistema:");
+                System.out.println("1. Acessar como Usuário");
+                System.out.println("2. Acessar como Administrador");
+                 System.out.println("0. Sair");
+                System.out.print("Escolha: ");
+                opcao = input.nextInt();
+                input.nextLine();
 
+            } catch (Exception e) {
+                input.nextLine();
+                opcao = -1; 
+            }
             switch (opcao) {
                 case 1 ->
                     usuario.menuUser();
