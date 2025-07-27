@@ -2,13 +2,13 @@ package model.Acessos;
 
 import java.util.List;
 import java.util.Scanner;
-import model.Cinema.Filme;
-import model.Cinema.Ingresso;
-import model.Cinema.Sala;
-import model.Sistema;
+import model.Cine.Filme;
+import model.Cine.Ingresso;
+import model.Cine.Sala;
+import model.Cinema;
 import model.utilidades;
 
-public class Admin {
+public class Adm_cinema {
 
     Scanner input = new Scanner(System.in);
 
@@ -35,7 +35,7 @@ public class Admin {
             } finally {
                 switch (opc) {
                     case 1 ->
-                        Sistema.verFilmesEmCartaz();
+                        Cinema.verFilmesEmCartaz();
                     case 2 ->
                         cadastrarFilme();
                     case 3 ->
@@ -77,7 +77,7 @@ public class Admin {
             input.nextLine();
 
             Filme filme = new Filme(titulo, duracao, genero, preco);
-            Sistema.salas[sala - 1].cadastrarFilme(filme);
+            Cinema.salas[sala - 1].cadastrarFilme(filme);
 
         } catch (Exception e) {
             System.out.println("Erro ao cadastrar filme: " + e.getMessage());
@@ -92,7 +92,7 @@ public class Admin {
             if (sala < 1 || sala > 5) {
                 System.out.println("Essa sala não existe");
             } else {
-                Sistema.salas[sala - 1].mostrarMapaAssentos();
+                Cinema.salas[sala - 1].mostrarMapaAssentos();
             }
         } catch (Exception e) {
             System.out.println("Erro ao ver ocupação: " + e.getMessage());
@@ -101,7 +101,7 @@ public class Admin {
 
     private void gerarRelatorioLucro() {
         double[] lucros = new double[5];
-        for (Ingresso ingresso : Sistema.ingressosVendidos) {
+        for (Ingresso ingresso : Cinema.ingressosVendidos) {
             int salaIndex = ingresso.getSala().getNumeroSala() - 1;
             lucros[salaIndex] += ingresso.getValorPago();
         }
@@ -112,6 +112,10 @@ public class Admin {
     }
 
     public void removerFilme() {
+        if(!Cinema.haFilmesEmCartaz()){
+            System.out.println("Nenhum filme para remover.");
+            return;
+        }
         try {
             System.out.print("Nome do filme a ser removido: ");
             String nomeFilme = input.nextLine();
@@ -121,16 +125,16 @@ public class Admin {
             if (sala < 1 || sala > 5) {
                 System.out.println("Essa sala não existe");
             } else {
-                Sistema.salas[sala - 1].removerFilme(nomeFilme);
+                Cinema.salas[sala - 1].removerFilme(nomeFilme);
             }
-            Sistema.salas[sala - 1].removerFilme(nomeFilme);
+            Cinema.salas[sala - 1].removerFilme(nomeFilme);
         } catch (Exception e) {
             System.out.println("Erro ao remover filme: " + e.getMessage());
         }
     }
 
     private void preencherSalas() {
-        List<Filme> filmesOrdenados = Sistema.getFilmesOrdenadosPorLucro();
+        List<Filme> filmesOrdenados = Cinema.getFilmesOrdenadosPorLucro();
 
         if (filmesOrdenados.isEmpty()) {
             System.out.println("Nenhum filme em cartaz para preencher salas.");
@@ -139,7 +143,7 @@ public class Admin {
 
         int index = 0, count = 0;
 
-        for (Sala sala : Sistema.salas) {
+        for (Sala sala : Cinema.salas) {
             if (sala.getFilme() == null) {
                 Filme escolhido = filmesOrdenados.get(index);
                 sala.setFilme(escolhido);
@@ -155,5 +159,4 @@ public class Admin {
             System.out.printf("%d sala(s) foram preenchidas com os filmes mais lucrativos.%n", count);
         }
     }
-
 }

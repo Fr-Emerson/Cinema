@@ -1,7 +1,7 @@
-package model.Cinema;
+package model.Cine;
 
 import java.util.Scanner;
-import model.Sistema;
+import model.Cinema;
 
 public class Sala {
     protected  int numeroSala;
@@ -61,7 +61,7 @@ public class Sala {
             return null;
         }
 
-        return Sistema.salas[salaNum - 1];
+        return Cinema.salas[salaNum - 1];
     } catch (Exception e) {
         System.out.println("Entrada inválida. Compra cancelada.");
         input.nextLine(); 

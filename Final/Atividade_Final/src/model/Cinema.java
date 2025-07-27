@@ -7,27 +7,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-import model.Acessos.Admin;
-import model.Acessos.User;
-import model.Cinema.Filme;
-import model.Cinema.Ingresso;
-import model.Cinema.Sala;
+import model.Acessos.Adm_cinema;
+import model.Acessos.Cliente_cinema;
+import model.Cine.Filme;
+import model.Cine.Ingresso;
+import model.Cine.Sala;
 
-public class Sistema {
+public class Cinema {
 
     Scanner input = new Scanner(System.in);
     public static ArrayList<Ingresso> ingressosVendidos = new ArrayList<>();
-    User usuario;
-    Admin admin;
+    Cliente_cinema usuario;
+    Adm_cinema admin;
     public static Sala[] salas = new Sala[5];
 
-    public Sistema() {
-        usuario = new User();
-        admin = new Admin();
+    public Cinema() {
+        usuario = new Cliente_cinema();
+        admin = new Adm_cinema();
         for (int i = 0; i < salas.length; i++) {
             salas[i] = new Sala(i + 1);
         }
     }
+    public static boolean haFilmesEmCartaz() {
+    for (Sala s : salas) {
+        if (s != null && s.getFilme() != null) {
+            return true;
+        }
+    }
+    return false;
+}
 
     public static void verFilmesEmCartaz() {
         System.out.println("\n=== Filmes em Cartaz ===");

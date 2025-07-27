@@ -1,4 +1,4 @@
-package model.Cinema;
+package model.Cine;
 
 import java.util.Scanner;
 
@@ -59,10 +59,13 @@ public class Assento {
         return null;
     }
 }
-
+    public String mostrarAssento(){
+        String assento = String.format("[ %c ][ %02d ]", this.fileira, this.numero);
+        return assento;
+    }
     @Override
     public String toString() {
         String numFormatado = String.format("%02d", this.numero);
-        return ocupado ? "["+this.fileira+"]" : "[ " + numFormatado + " ]";
+        return ocupado ? "[ XX ]" : "[ " + numFormatado + " ]";
     }
 }

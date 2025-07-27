@@ -1,12 +1,14 @@
 package model.Acessos;
 
 import java.util.Scanner;
-import model.Cinema.*;
+import model.Cine.Assento;
+import model.Cine.Ingresso;
+import model.Cine.Sala;
+import model.Cinema;
 import model.Pessoa.Pessoa;
-import model.Sistema;
 import model.utilidades;
 
-public class User {
+public class Cliente_cinema {
 
     Scanner input = new Scanner(System.in);
 
@@ -37,7 +39,7 @@ public class User {
                 case 2 ->
                     verMapaAssentos();
                 case 3 ->
-                    Sistema.verFilmesEmCartaz();
+                    Cinema.verFilmesEmCartaz();
                 case 4 ->
                     verHistoricoCompras();
                 case 0 ->
@@ -56,7 +58,7 @@ public class User {
             return;
         }
         boolean encontrou = false;
-        for (Ingresso ingresso : Sistema.ingressosVendidos) {
+        for (Ingresso ingresso : Cinema.ingressosVendidos) {
             if (ingresso.getPessoa().getNome().equalsIgnoreCase(nome)) {
                 System.out.println(ingresso);
                 encontrou = true;
@@ -77,7 +79,7 @@ public class User {
                 System.out.println("Sala inválida.");
                 return;
             }
-            Sala sala = Sistema.salas[salaNum - 1];
+            Sala sala = Cinema.salas[salaNum - 1];
             sala.mostrarMapaAssentos();
         } catch (Exception e) {
             System.out.println("Erro ao exibir mapa de assentos.");
@@ -87,7 +89,10 @@ public class User {
 
     public void comprar() {
         System.out.println("\n=== Compra de Ingressos ===");
-
+        if(!Cinema.haFilmesEmCartaz()){
+            System.out.println("Nenhum filme em cartaz.");
+            return;
+        }
         Pessoa pessoa;
         try {
             pessoa = Pessoa.criarPessoa(input);
@@ -123,7 +128,7 @@ public class User {
         double precoFinal = pessoa.calcularPrecoFinal(sala.getFilme().getPrecoIngresso());
 
         Ingresso ingresso = new Ingresso(pessoa, sala, assento, precoFinal);
-        Sistema.ingressosVendidos.add(ingresso);
+        Cinema.ingressosVendidos.add(ingresso);
 
         System.out.println("\n=== Ingresso Comprado ===");
         System.out.println(ingresso);

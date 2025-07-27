@@ -1,4 +1,4 @@
-package model.Cinema;
+package model.Cine;
 
 public class Filme {
     private final String titulo;

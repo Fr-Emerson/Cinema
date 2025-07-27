@@ -48,6 +48,9 @@ public class Pessoa {
             input.nextLine();
             System.out.print("Categoria (normal, estudante, idoso, professor): ");
             String cat = input.nextLine().toLowerCase();
+            if (nome.isEmpty() || idade < 0 || (!cat.equals("normal") && !cat.equals("estudante") && !cat.equals("idoso") && !cat.equals("professor"))) {
+                throw new Exception("Dados inválidos.");
+            }
             return new Pessoa(nome, idade, cat);
         }
         catch(Exception e){

@@ -1,12 +1,12 @@
-package model.Cinema;
+package model.Cine;
 
 import model.Pessoa.Pessoa;
 
 public class Ingresso {
-    private final Pessoa pessoa;
-    private final Sala sala;
-    private final Assento assento;
-    private final double valorPago;
+    private Pessoa pessoa;
+    private Sala sala;
+    private Assento assento;
+    private double valorPago;
 
     public Ingresso(Pessoa pessoa, Sala sala, Assento assento, double valorPago) {
         this.pessoa = pessoa;
@@ -15,6 +15,27 @@ public class Ingresso {
         this.valorPago = valorPago;
     }
 
+    
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
+
+
+    public void setAssento(Assento assento) {
+        this.assento = assento;
+    }
+
+
+    public void setValorPago(double valorPago) {
+        this.valorPago = valorPago;
+    }
+
+
     public Sala getSala() {
         return sala;
     }
@@ -22,7 +43,15 @@ public class Ingresso {
     public double getValorPago() {
         return valorPago;
     }
-    public void comprarIngresso() {
+
+    
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+    public Assento getAssento() {
+        return assento;
+    }
+     public void comprarIngresso() {
         if (assento.isOcupado()) {
             System.out.println("Assento já ocupado. Escolha outro assento.");
         } else {
@@ -31,18 +60,13 @@ public class Ingresso {
             
         }
     }
-    
     @Override
     public String toString() {
         return """
                Ingresso Comprado:
                Pessoa: """ + this.pessoa.getNome() + "\n" +
                "Sala: " + this.sala + "\n" +
-               "Assento: " + this.assento + "\n" +
+               "Assento: " + this.assento.mostrarAssento() + "\n" +
                "Valor Pago: R$ " + this.valorPago;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
     }
 }

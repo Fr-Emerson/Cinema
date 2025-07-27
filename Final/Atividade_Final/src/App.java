@@ -1,8 +1,8 @@
-import model.Sistema;
+import model.Cinema;
 
 public class App {
     public static void main(String[] args) {
-        Sistema sistema = new Sistema();
+        Cinema sistema = new Cinema();
         sistema.menu();
     }
 }
