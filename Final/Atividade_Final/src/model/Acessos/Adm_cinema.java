@@ -57,6 +57,7 @@ public class Adm_cinema {
     }
 
     private void cadastrarFilme() {
+        System.out.println("\n\n\n=== Cadastro de Filme ===");
         try {
             System.out.print("Título: ");
             String titulo = input.nextLine();
@@ -127,7 +128,6 @@ public class Adm_cinema {
             } else {
                 Cinema.salas[sala - 1].removerFilme(nomeFilme);
             }
-            Cinema.salas[sala - 1].removerFilme(nomeFilme);
         } catch (Exception e) {
             System.out.println("Erro ao remover filme: " + e.getMessage());
         }
